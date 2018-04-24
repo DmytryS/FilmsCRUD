@@ -133,7 +133,7 @@ describe('FilmsService', () => {
       };
 
       const response = await request(server)
-        .post(`/api/films/${film._id}`)
+        .film(`/api/films/${film._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(newFilmObject)
