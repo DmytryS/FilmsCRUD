@@ -16,8 +16,6 @@ const mapDispatchToProps = (dispatch) => {
     fetchFilm: (id) => {
       dispatch(fetchFilm(id))
         .then((result) => {
-          // Note: Error's "data" is in result.payload.response.data (inside "response")
-          // success's "data" is in result.payload.data
           if (result.payload.response && result.payload.response.status !== 200) {
             dispatch(fetchFilmFailure(result.payload.response.data));
           } else {
@@ -26,7 +24,6 @@ const mapDispatchToProps = (dispatch) => {
         })
     },
     resetMe: () => {
-      //clean up both activeFilm(currrently open) and deletedFilm(open and being deleted) states
       dispatch(resetActiveFilm());
       dispatch(resetDeletedFilm());
     }

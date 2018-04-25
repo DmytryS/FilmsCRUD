@@ -100,9 +100,9 @@ export default class FilmsService {
         onError('both sort-by and sort-order must be defined', 'sort-by|sort-order', null);
       }
       if (value['sort-by']) {
-        const sortableByFields = ['name'];
+        const sortableByFields = ['title', 'stars'];
         if (sortableByFields.indexOf(value['sort-by']) === -1) {
-          onError('sort must be either of \'name\'', 'sort-by', null);
+          onError('sort must be either of \'title\', \'stars\'', 'sort-by', null);
         }
 
         const sortOrder = ['asc', 'desc'];
@@ -113,8 +113,8 @@ export default class FilmsService {
     }
 
     const filterRules = validator.isObject()
-      .withOptional('name', validator.isString())
-      .withOptional('actor', validator.isString())
+      .withOptional('title', validator.isString())
+      .withOptional('stars', validator.isString())
       .withOptional('offset', validator.isInteger({allowString: true, min: 0}))
       .withOptional('limit', validator.isInteger({allowString: true, min: 1}))
       .withCustom(validateSortParam)
@@ -137,11 +137,11 @@ export default class FilmsService {
     const filmObject = req.body;
 
     const userRules = validator.isObject()
-      .withRequired('name', validator.isString())
+      .withRequired('title', validator.isString())
       .withRequired('year', validator.isInteger({allowString: true, min: 1930}))
       .withCustom(validateFormat)
       .withRequired('format', validator.isString())
-      .withRequired('actors', validator.isArray(validator.isString()));
+      .withRequired('stars', validator.isArray(validator.isString()));
 
     validator.run(userRules, filmObject, (errorCount, err) => {
       if (errorCount !== 0) {

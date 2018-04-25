@@ -1,6 +1,6 @@
-import { connect } from 'react-redux'
-import { fetchFilms, fetchFilmsSuccess, fetchFilmssFailure } from '../actions/films';
-import FilmsList from '../components/FilmsList';
+import FilterForm from '../components/filter';
+import {fetchFilms, fetchFilmsFailure, fetchFilmsSuccess} from '../actions/films';
+import { connect } from 'react-redux';
 
 
 const mapStateToProps = (state) => {
@@ -19,4 +19,5 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilmsList);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterForm);
+

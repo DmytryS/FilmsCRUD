@@ -36,10 +36,10 @@ describe('FilmsService', () => {
 
   describe('AddFilm', () => {
     const filmObject = {
-      name: 'Die Hard',
+      title: 'Die Hard',
       year: 1988,
       format: 'VHS',
-      actors: ['Bruce Willis', 'Alan Rickman']
+      stars: ['Bruce Willis', 'Alan Rickman']
     };
 
     it('should add new film to db', async () => {
@@ -60,10 +60,10 @@ describe('FilmsService', () => {
 
   describe('DeleteFilm', () => {
     const filmObject = {
-      name: 'Die Hard',
+      title: 'Die Hard',
       year: 1988,
       format: 'VHS',
-      actors: ['Bruce Willis', 'Alan Rickman']
+      stars: ['Bruce Willis', 'Alan Rickman']
     };
     let film;
 
@@ -85,10 +85,10 @@ describe('FilmsService', () => {
 
   describe('GetFilm', () => {
     const filmObject = {
-      name: 'Die Hard',
+      title: 'Die Hard',
       year: 1988,
       format: 'VHS',
-      actors: ['Bruce Willis', 'Alan Rickman']
+      stars: ['Bruce Willis', 'Alan Rickman']
     };
     let film;
 
@@ -113,10 +113,10 @@ describe('FilmsService', () => {
 
   describe('EditFilm', () => {
     const filmObject = {
-      name: 'Die Hardddd',
+      title: 'Die Hardddd',
       year: 1930,
       format: 'DVD',
-      actors: ['Alan Rickman']
+      stars: ['Alan Rickman']
     };
     let film;
 
@@ -126,14 +126,14 @@ describe('FilmsService', () => {
 
     it('should edit saved film', async () => {
       const newFilmObject = {
-        name: 'Die Hard',
+        title: 'Die Hard',
         year: 1988,
         format: 'VHS',
-        actors: ['Bruce Willis', 'Alan Rickman']
+        stars: ['Bruce Willis', 'Alan Rickman']
       };
 
       const response = await request(server)
-        .film(`/api/films/${film._id}`)
+        .post(`/api/films/${film._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(newFilmObject)
@@ -150,16 +150,16 @@ describe('FilmsService', () => {
 
   describe('GetFilms', () => {
     const filmObject1 = {
-      name: 'Die Hard',
+      title: 'Die Hard',
       year: 1988,
       format: 'VHS',
-      actors: ['Bruce Willis', 'Alan Rickman']
+      stars: ['Bruce Willis', 'Alan Rickman']
     };
     const filmObject2 = {
-      name: 'Bad Boys',
+      title: 'Bad Boys',
       year: 1995,
       format: 'VHS',
-      actors: ['Will Smith', 'Martin Lawrence']
+      stars: ['Will Smith', 'Martin Lawrence']
     };
 
     beforeEach(async () => {
@@ -167,9 +167,9 @@ describe('FilmsService', () => {
       await filmModel.Film.saveFilm(filmObject2);
     });
 
-    it('should return films list sorted by name', async () => {
+    it('should return films list sorted by title', async () => {
       let response = await request(server)
-        .get('/api/films?sort-by=name&sort-order=desc&limit=10')
+        .get('/api/films?sort-by=title&sort-order=desc&limit=10')
         .set('Accept', 'application/json')
         .expect(200)
         .end()
@@ -180,9 +180,9 @@ describe('FilmsService', () => {
       response.should.eql([filmObject1, filmObject2]);
     });
 
-    it('should find films by name', async () => {
+    it('should find films by title', async () => {
       const response = await request(server)
-        .get('/api/films?name=Die%20Hard&limit=10' )
+        .get('/api/films?title=Die%20Hard&limit=10' )
         .set('Accept', 'application/json')
         .expect(200)
         .end()
@@ -196,7 +196,7 @@ describe('FilmsService', () => {
 
     it('should find films by actor', async () => {
       const response = await request(server)
-        .get('/api/films?actor=Will%20Smith&limit=10')
+        .get('/api/films?stars=Will%20Smith&limit=10')
         .set('Accept', 'application/json')
         .expect(200)
         .end()

@@ -33,10 +33,19 @@ export const RESET_DELETED_FILM = 'RESET_DELETED_FILM';
 
 
 const ROOT_URL = '/api';
-export function fetchFilms() {
+export function fetchFilms(queryParams) {
+  let queryString = `sort-order=${queryParams['sort-order']}&sort-by=${queryParams['sort-by']}`;
+
+  if(queryParams.stars && queryParams.stars !== '') {
+    queryString += `&stars=${encodeURI(queryParams.stars)}`
+  }
+  if(queryParams.title && queryParams.title !== '') {
+    queryString += `&title=${encodeURI(queryParams.title)}`
+  }
+
   const request = axios({
     method: 'get',
-    url: `${ROOT_URL}/films?limit=50`,
+    url: `${ROOT_URL}/films?limit=50&${queryString}`,
     headers: []
   });
 

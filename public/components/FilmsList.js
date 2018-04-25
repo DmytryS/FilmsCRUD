@@ -4,23 +4,22 @@ import { Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
 
 class FilmsList extends Component {
   componentWillMount() {
-    this.props.fetchFilms();
+    this.props.fetchFilms({'sort-by':'title', 'sort-order': 'asc'});
   }
 
   renderFilms(films) {
-    return films.map((film) => {
-      return (
-        <ListGroupItem key={film._id}>
-          <Link to={`films/${film._id}`}>
-            {film.name}
-          </Link>
-        </ListGroupItem>
-      );
-    });
+    return films.map((film) =>
+      <ListGroupItem key={film._id}>
+        <Link to={`films/${film._id}`}>
+          {film.title}
+        </Link>
+      </ListGroupItem>
+    );
   }
 
   render() {
     const { films, loading, error } = this.props.filmsList;
+    const {handleSubmit} = this.props;
 
     if(loading) {
       return <div><Panel><Panel.Heading>Films</Panel.Heading><Panel.Body>Loading...</Panel.Body></Panel></div>

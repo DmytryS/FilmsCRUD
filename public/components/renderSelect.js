@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 
 const renderOptions = (options) => {
-  return options.map((option,index) => <option key={index}>{option}</option>)
+  return options.map((option,index) => {
+    if (index === 0) {
+      return <option selected key={index}>{option}</option>
+    } else {
+      return <option key={index}>{option}</option>
+    }
+  })
 };
 
-const renderField = ({ input, label, type, meta: { touched, error, invalid, warning }, options }) => (
+const renderSelect = ({ input, label, type, meta: { touched, error, invalid, warning }, options }) => (
   <div className={`form-group ${touched && invalid ? 'has-error' : ''}`}>
     <label  className="control-label">{label}</label>
     <div>
@@ -18,4 +24,4 @@ const renderField = ({ input, label, type, meta: { touched, error, invalid, warn
   </div>
 );
 
-export default renderField;
+export default renderSelect;

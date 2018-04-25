@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Navbar, FormGroup, FormControl, Nav, NavItem, Button} from 'react-bootstrap';
 
-
 class Header extends Component {
   static contextTypes = {
     router: PropTypes.object
@@ -31,20 +30,10 @@ class Header extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Navbar.Form pullLeft>
-              <FormGroup>
-                <FormControl type="text" placeholder="Search" />
-              </FormGroup>{' '}
-              <Button type="submit">Submit</Button>
             </Navbar.Form>
             <Nav pullRight>
               <NavItem>
                 <Link to="films/new">Add Film</Link>
-              </NavItem>
-              <NavItem>
-                <div className="form-group">
-                  <label>Import from file</label>
-                  <input type="file"/>
-                </div>
               </NavItem>
             </Nav>
           </Navbar.Collapse>
@@ -72,7 +61,7 @@ class Header extends Component {
 
             <Nav pullRight>
               <NavItem>
-                <Button bsStyle="warning" onClick={()=> {this.props.onDeleteClick()}}>Delete Film</Button>
+                <Button bsStyle="warning" onClick={()=> {this.props.onDeleteClick();this.context.router.push('/');}}>Delete Film</Button>
               </NavItem>
             </Nav>
           </Navbar.Header>

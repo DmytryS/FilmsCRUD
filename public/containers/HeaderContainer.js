@@ -16,7 +16,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onDeleteClick: () => {
       dispatch(deleteFilm(ownProps.filmId))
         .then((response) => {
-          !response.error ? dispatch(deleteFilmSuccess(response.payload)) : dispatch(deleteFilmFailure(response.payload));
+          if(!response.error) {
+            dispatch(deleteFilmSuccess(response.payload));
+          } else {
+            dispatch(deleteFilmFailure(response.payload));
+          }
         });
     },
     resetMe: () =>{

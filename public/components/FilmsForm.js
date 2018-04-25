@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
-import { FormGroup, ControlLabel, FormControl, Button, Alert } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 import renderField from './renderField';
 import renderTextArea from './renderTextArea';
 import renderSelect from './renderSelect'
 import { addFilm, addFilmSuccess, addFilmFailure, resetAddFilm } from '../actions/films';
+import ReactFileReader from 'react-file-reader';
 
-//Client side validation
 function validate(values) {
   const errors = {};
 
-  if (!values.name || values.name.trim() === '') {
-    errors.title = 'Enter a Name';
+  if (!values.title || values.title.trim() === '') {
+    errors.title = 'Enter title';
   }
   if (!values.year || values.year.trim() === '') {
     errors.year = 'Enter year';
@@ -21,27 +21,12 @@ function validate(values) {
   if (!values.format || values.format.trim() === '') {
     errors.format = 'Enter some content';
   }
-  if (!values.actors || values.actors.trim() === '') {
-    errors.actors = 'Enter actors';
+  if (!values.stars || values.stars.trim() === '') {
+    errors.stars = 'Enter stars';
   }
 
   return errors;
 }
-
-const validateAndAddFilm = (values, dispatch) => {
-  values.actors = values.actors.split(',');
-  return dispatch(addFilm(values))
-    .then(result => {
-      if (result.payload.response && result.payload.response.status !== 200) {
-        dispatch(addFilmFailure(result.payload.response.data));
-        throw new SubmissionError(result.payload.response.data);
-      }
-      dispatch(addFilmSuccess(result.payload.data));
-      debugger;
-      this.context.router.push('/');
-    });
-};
-
 
 
 class FilmsForm extends Component {
@@ -71,21 +56,45 @@ class FilmsForm extends Component {
       return <span></span>
     }
   }
+
+  handleFile (file)  {
+    const { handleSubmit } = this.props;
+    file = atob(file.base64.replace('data:text/plain;base64,', ''));
+
+    let regexp = new RegExp(/(?:Title: (.*)\nRelease Year: (.*)\nFormat: (.*)\nStars: (.*))/g);
+    let result;
+    while (result = regexp.exec(file)) {
+      const newFilm = {
+        title: result[1],
+        year: result[2],
+        format: result[3],
+        stars: result[4].split(',')
+      };
+      this.props.addFilm(newFilm);
+    }
+    this.context.router.push('/');
+  }
+
+  handleSubmitForm(newFilm) {
+    newFilm.stars = newFilm.stars.split(',');
+    this.props.addFilm(newFilm);
+    this.context.router.push('/');
+  }
+
   render() {
     const {handleSubmit, submitting, addFilm} = this.props;
     return (
       <div className='container'>
         { this.renderError(addFilm) }
-
-        <form onSubmit={ handleSubmit(validateAndAddFilm.bind(this))}>
-          <Field name="name" type="text" component={ renderField } label="Name*" />
+        <ReactFileReader base64={true} fileTypes={[".txt"]}  handleFiles={this.handleFile.bind(this)} >
+          <button className='btn'>Import from file</button>
+        </ReactFileReader>
+        Or
+        <form onSubmit={ handleSubmit(this.handleSubmitForm.bind(this))}>
+          <Field name="title" type="text" component={ renderField } label="Title*" />
           <Field name="year" type="text" component={ renderField } label="Year*" />
-
           <Field name="format" type="select" component={ renderSelect } options={['', 'VHS', 'DVD', 'Blu-Ray']} label="Format*"/>
-
-
-          <Field name="actors" component={ renderTextArea } label="Actors*" />
-
+          <Field name="stars" component={ renderTextArea } label="Stars*" />
           <Button type="submit" className="btn btn-primary" disabled={ submitting }>
             Submit
           </Button>
@@ -102,6 +111,6 @@ class FilmsForm extends Component {
 
 
 export default reduxForm({
-  form: 'FilmsForm', // a unique identifier for this form
-  validate // <--- validation function given to redux-form
+  form: 'FilmsForm',
+  validate
 })(FilmsForm)

@@ -7,14 +7,14 @@ let Schema = mongoose.Schema;
 export default class FilmModel {
   constructor() {
     let filmSchema = new Schema({
-      name: {type: String, required: true},
+      title: {type: String, required: true},
       year: {type: Number, required:true},
       format: {
         type: String,
         required: true,
         enum: ['VHS', 'DVD', 'Blu-Ray']
       },
-      actors: [{type: String}]
+      stars: [{type: String}]
     }, {usePushEach: true});
 
     filmSchema.statics.findFilms = findFilms;
@@ -27,11 +27,11 @@ export default class FilmModel {
       let skipRecords = 0;
       let limitRecords = 1;
 
-      if (filterParams.name) {
-        filterObject.name = filterParams.name;
+      if (filterParams.title) {
+        filterObject.title = filterParams.title;
       }
-      if (filterParams.actor) {
-        filterObject.actors = {$all: [filterParams.actor]};
+      if (filterParams.stars) {
+        filterObject.stars = {$all: [filterParams.stars]};
       }
       if (filterParams.skip) {
         skipRecords = parseInt(filterParams.skip);
@@ -57,10 +57,10 @@ export default class FilmModel {
     }
 
     function updateFilm(filmObject) {
-      this.name = filmObject.name;
+      this.title = filmObject.title;
       this.year = filmObject.year;
       this.format = filmObject.format;
-      this.actors = filmObject.actors;
+      this.stars = filmObject.stars;
 
       return this.save();
     }

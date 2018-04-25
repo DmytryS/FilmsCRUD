@@ -1,12 +1,23 @@
 import FilmsForm from '../components/FilmsForm';
-import { resetAddFilm } from '../actions/films';
+import {addFilmFailure, addFilmSuccess, resetAddFilm, addFilm} from '../actions/films';
 import { connect } from 'react-redux';
+import {SubmissionError} from "redux-form";
 
 
 const mapDispatchToProps = (dispatch) => {
   return {
     resetMe: () => {
       dispatch(resetAddFilm());
+    },
+    addFilm: (filmObject) => {
+      dispatch(addFilm(filmObject))
+        .then(result => {
+          if (result.payload.response && result.payload.response.status !== 200) {
+            dispatch(addFilmFailure(result.payload.response.data));
+            throw new SubmissionError(result.payload.response.data);
+          }
+          dispatch(addFilmSuccess(result.payload.data));
+        })
     }
   }
 };
