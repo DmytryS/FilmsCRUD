@@ -4,7 +4,7 @@ import FilmsReducer from './FilmReducer';
 
 const Reducers = combineReducers({
   films: FilmsReducer,
-  form: formReducer // <-- redux-form
+  form: formReducer
 });
 
 export default Reducers;

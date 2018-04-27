@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Navbar, FormGroup, FormControl, Nav, NavItem, Button} from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Button} from 'react-bootstrap';
 
 class Header extends Component {
   static contextTypes = {
@@ -25,16 +25,9 @@ class Header extends Component {
     if(type === 'films_index') {
       return (
         <Navbar>
-          <Navbar.Header>
-            <Navbar.Toggle />
-          </Navbar.Header>
           <Navbar.Collapse>
-            <Navbar.Form pullLeft>
-            </Navbar.Form>
             <Nav pullRight>
-              <NavItem>
-                <Link to="films/new">Add Film</Link>
-              </NavItem>
+              <NavItem componentClass={Link} href="/films/new" to="/films/new">Add film</NavItem>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -46,7 +39,6 @@ class Header extends Component {
             <Navbar.Brand>
               <Link to="/">Main</Link>
             </Navbar.Brand>
-            <Navbar.Toggle />
           </Navbar.Header>
         </Navbar>
       );
@@ -57,14 +49,14 @@ class Header extends Component {
             <Navbar.Brand>
               <Link to="/">Main</Link>
             </Navbar.Brand>
-            <Navbar.Toggle />
-
+          </Navbar.Header>
+          <Navbar.Collapse>
             <Nav pullRight>
               <NavItem>
                 <Button bsStyle="warning" onClick={()=> {this.props.onDeleteClick();this.context.router.push('/');}}>Delete Film</Button>
               </NavItem>
             </Nav>
-          </Navbar.Header>
+          </Navbar.Collapse>
         </Navbar>
       );
     }
@@ -72,11 +64,10 @@ class Header extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-default navbar-static-top">
-        <div id="navbar" className="navbar-collapse collapse">
-          {this.renderLinks()}
-        </div>
-      </nav>
+      <div>
+        {this.renderLinks()}
+      </div>
+
     );
   }
 }

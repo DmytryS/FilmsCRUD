@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteFilm } from '../actions/films';
 import FilmDetailsContainer from '../containers/FilmDetailsContainer';
 import HeaderContainer from '../containers/HeaderContainer.js';
 

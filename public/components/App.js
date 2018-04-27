@@ -3,7 +3,6 @@ import { Component } from 'react';
 
 export default class App extends Component {
   componentWillMount() {
-    this.props.loadUserFromToken();
   }
 
   render() {

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 const renderOptions = (options) => {
   return options.map((option,index) => {
     if (index === 0) {
-      return <option selected key={index}>{option}</option>
+      return <option defaultValue key={index}>{option}</option>
     } else {
       return <option key={index}>{option}</option>
     }
